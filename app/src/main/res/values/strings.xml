@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Крестики-нолики</string>
+    <string name="player_x_turn">Ход игрока X</string>
+    <string name="player_o_turn">Ход игрока O</string>
+    <string name="player_x_wins">Игрок X победил!</string>
+    <string name="player_o_wins">Игрок O победил!</string>
+    <string name="draw">Ничья!</string>
+    <string name="reset_game">Новая игра</string>
+</resources>

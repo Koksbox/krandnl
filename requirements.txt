@@ -1,0 +1,9 @@
+# Требования к игре "Крестики-нолики"
+
+
+### 1. Платформа и технологии
+- Android API Level 21+ (Android 5.0+)
+- Kotlin 1.8+
+- Android Studio Arctic Fox или новее
+- Gradle 7.0+
+

@@ -1,10 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Основные цвета приложения (чёрно-фиолетовая тема) -->
+    <color name="primary">#FF8B5CF6</color>
+    <color name="primary_dark">#FF1E1B4B</color>
+    <color name="primary_light">#FFA78BFA</color>
+    <color name="accent">#FF7C3AED</color>
+    
+    <!-- Фоновые цвета (чёрно-фиолетовая тема) -->
+    <color name="background_primary">#FF0A0A0A</color>
+    <color name="background_secondary">#FF1E1B4B</color>
+    <color name="background_card">#FF312E81</color>
+    <color name="background_button">#FF4338CA</color>
+    
+    <!-- Неоновые цвета ТОЛЬКО для символов игроков -->
+    <color name="player_x">#FFFF1744</color>
+    <color name="player_o">#FF00E676</color>
+    <color name="player_brackets">#FF2979FF</color>
+    <color name="player_hash">#FFFF9100</color>
+    
+    <!-- Текстовые цвета (чёрно-фиолетовая тема) -->
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="text_secondary">#FFC7D2FE</color>
+    <color name="text_light">#FF818CF8</color>
+    
+    <!-- Градиентные цвета -->
+    <color name="gradient_start">#FF0A0A0A</color>
+    <color name="gradient_end">#FF1E1B4B</color>
+    
+    <!-- Тени -->
+    <color name="shadow_light">#33000000</color>
+    <color name="shadow_medium">#66000000</color>
+    
+    <!-- Фиолетовые акценты -->
+    <color name="purple_dark">#FF4C1D95</color>
+    <color name="purple_medium">#FF7C3AED</color>
+    <color name="purple_light">#FFA78BFA</color>
 </resources>

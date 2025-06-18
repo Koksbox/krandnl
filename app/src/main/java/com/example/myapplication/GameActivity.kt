@@ -12,23 +12,32 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.os.CountDownTimer
 
+/**
+ * Главная активность игры в крестики-нолики
+ * Управляет пользовательским интерфейсом и взаимодействием с игровой логикой
+ */
 class GameActivity : AppCompatActivity() {
-    private lateinit var game: TicTacToeGame
-    private lateinit var gameStatusText: TextView
-    private lateinit var scoreText: TextView
-    private lateinit var gameBoard: GridLayout
-    private lateinit var menuButton: ImageButton
-    private var buttons: Array<Button> = arrayOf()
+    // Основные компоненты игры
+    private lateinit var game: TicTacToeGame // Игровая логика
+    private lateinit var gameStatusText: TextView // Текст статуса игры
+    private lateinit var scoreText: TextView // Текст счета
+    private lateinit var gameBoard: GridLayout // Игровое поле
+    private lateinit var menuButton: ImageButton // Кнопка меню
+    private var buttons: Array<Button> = arrayOf() // Массив кнопок игрового поля
 
     // Цвета для игроков из ресурсов
     private lateinit var playerColors: Map<String, Int>
 
-    private lateinit var timerText: TextView
-    private var gameTimer: CountDownTimer? = null
-    private var timerDurationSec: Int = 0 // 0 = без таймера
-    private var timerMillisLeft: Long = 0L
-    private var isFirstMove: Boolean = true // флаг первого хода
+    // Компоненты таймера
+    private lateinit var timerText: TextView // Текст таймера
+    private var gameTimer: CountDownTimer? = null // Таймер игры
+    private var timerDurationSec: Int = 0 // Длительность таймера в секундах (0 = без таймера)
+    private var timerMillisLeft: Long = 0L // Оставшееся время в миллисекундах
+    private var isFirstMove: Boolean = true // Флаг первого хода (для запуска таймера)
 
+    /**
+     * Инициализация активности при создании
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
@@ -41,6 +50,7 @@ class GameActivity : AppCompatActivity() {
             "#" to ContextCompat.getColor(this, R.color.player_hash)
         )
 
+        // Инициализация игровых компонентов
         game = TicTacToeGame(this)
         gameStatusText = findViewById(R.id.gameStatusText)
         scoreText = findViewById(R.id.scoreText)
@@ -48,18 +58,25 @@ class GameActivity : AppCompatActivity() {
         menuButton = findViewById(R.id.menuButton)
         timerText = findViewById(R.id.timerText)
 
+        // Настройка игры
         setupGame()
         setupMenuButton()
         updateScoreDisplay()
-        updateTimerVisibility() // обновляем видимость таймера
+        updateTimerVisibility() // Обновляем видимость таймера
     }
 
+    /**
+     * Настройка кнопки меню
+     */
     private fun setupMenuButton() {
         menuButton.setOnClickListener {
             showMenuDialog()
         }
     }
 
+    /**
+     * Показ диалога меню с опциями игры
+     */
     private fun showMenuDialog() {
         val menuItems = arrayOf(
             getString(R.string.game_mode),
@@ -73,11 +90,11 @@ class GameActivity : AppCompatActivity() {
             .setTitle(getString(R.string.menu))
             .setItems(menuItems) { dialog, which ->
                 when (which) {
-                    0 -> showSizeSelectionDialog()
-                    1 -> resetGame()
-                    2 -> showResetScoresDialog()
-                    3 -> showRulesDialog()
-                    4 -> showTimerSelectionDialog()
+                    0 -> showSizeSelectionDialog() // Выбор режима игры
+                    1 -> resetGame() // Сброс игры
+                    2 -> showResetScoresDialog() // Сброс счета
+                    3 -> showRulesDialog() // Правила
+                    4 -> showTimerSelectionDialog() // Выбор таймера
                 }
                 dialog.dismiss()
             }
@@ -87,15 +104,21 @@ class GameActivity : AppCompatActivity() {
             .show()
     }
 
+    /**
+     * Сброс текущей игры
+     */
     private fun resetGame() {
         game.resetGame()
-        buttons.forEach { it.text = "" }
-        isFirstMove = true // сбрасываем флаг первого хода
+        buttons.forEach { it.text = "" } // Очищаем все кнопки
+        isFirstMove = true // Сбрасываем флаг первого хода
         updateGameStatus()
-        updateTimerVisibility() // обновляем видимость таймера
-        gameTimer?.cancel() // останавливаем таймер
+        updateTimerVisibility() // Обновляем видимость таймера
+        gameTimer?.cancel() // Останавливаем таймер
     }
 
+    /**
+     * Показ диалога с правилами игры
+     */
     private fun showRulesDialog() {
         val rulesText = buildString {
             append(getString(R.string.rules_general))
@@ -118,6 +141,9 @@ class GameActivity : AppCompatActivity() {
             .show()
     }
 
+    /**
+     * Показ диалога подтверждения сброса счета
+     */
     private fun showResetScoresDialog() {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.reset_scores))
@@ -133,14 +159,17 @@ class GameActivity : AppCompatActivity() {
             .show()
     }
 
+    /**
+     * Показ диалога выбора размера поля и режима игры
+     */
     private fun showSizeSelectionDialog() {
         val modes = arrayOf("3x3", "4x4", "5x5", "6x6", "3x3 Misere (Поддавки)", "15x15 Гомоку", "Свободный выбор символов")
         val currentSize = game.getBoardSize()
         val currentMode = when {
-            game.getGomokuMode() -> 5
-            game.getMisereMode() -> 4
-            game.getFreeChoiceMode() -> 6
-            else -> currentSize - 3
+            game.getGomokuMode() -> 5 // Гомоку
+            game.getMisereMode() -> 4 // Поддавки
+            game.getFreeChoiceMode() -> 6 // Свободный выбор
+            else -> currentSize - 3 // Классические режимы
         }
         
         AlertDialog.Builder(this)
@@ -148,16 +177,20 @@ class GameActivity : AppCompatActivity() {
             .setSingleChoiceItems(modes, currentMode) { dialog, which ->
                 when (which) {
                     4 -> {
+                        // Режим поддавки (Misere)
                         game.setBoardSize(3)
                         game.applyMisereMode(true)
                     }
                     5 -> {
+                        // Режим Гомоку
                         game.applyGomokuMode(true)
                     }
                     6 -> {
+                        // Режим свободного выбора символов
                         showFreeChoiceSizeDialog()
                     }
                     else -> {
+                        // Классические режимы
                         val newSize = which + 3
                         game.setBoardSize(newSize)
                         game.applyMisereMode(false)
@@ -165,6 +198,7 @@ class GameActivity : AppCompatActivity() {
                         game.applyFreeChoiceMode(false)
                     }
                 }
+                // Обновляем интерфейс после смены режима
                 createGameBoard()
                 updateGameStatus()
                 updateScoreDisplay()
@@ -180,6 +214,9 @@ class GameActivity : AppCompatActivity() {
             .show()
     }
 
+    /**
+     * Показ диалога выбора размера поля для режима свободного выбора
+     */
     private fun showFreeChoiceSizeDialog() {
         val sizes = arrayOf("3x3", "4x4", "5x5")
         AlertDialog.Builder(this)
@@ -206,6 +243,9 @@ class GameActivity : AppCompatActivity() {
             .show()
     }
 
+    /**
+     * Показ диалога выбора символа для режима свободного выбора
+     */
     private fun showSymbolSelectionDialog(position: Int) {
         val symbols = arrayOf("X", "O")
         AlertDialog.Builder(this)
@@ -221,6 +261,9 @@ class GameActivity : AppCompatActivity() {
             .show()
     }
 
+    /**
+     * Выполнение хода с выбранным символом (для режима свободного выбора)
+     */
     private fun makeMoveWithSymbol(position: Int, symbol: String) {
         if (game.makeMove(position, symbol)) {
             val button = buttons[position]
@@ -231,6 +274,7 @@ class GameActivity : AppCompatActivity() {
             // Добавляем неоновое свечение ТОЛЬКО к символам игроков
             button.setShadowLayer(8f, 0f, 0f, playerColor)
             
+            // Запускаем таймер после первого хода
             if (isFirstMove) {
                 isFirstMove = false
                 startOrResetTimer()
@@ -244,6 +288,9 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Показ уведомления о сбросе счета
+     */
     private fun showScoreResetNotification() {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.score_reset_title))
@@ -254,6 +301,9 @@ class GameActivity : AppCompatActivity() {
             .show()
     }
 
+    /**
+     * Показ диалога выбора таймера
+     */
     private fun showTimerSelectionDialog() {
         val timerOptions = arrayOf(
             getString(R.string.timer_off),
@@ -281,6 +331,9 @@ class GameActivity : AppCompatActivity() {
             .show()
     }
 
+    /**
+     * Обновление видимости таймера
+     */
     private fun updateTimerVisibility() {
         if (timerDurationSec > 0) {
             timerText.visibility = android.view.View.VISIBLE
@@ -291,6 +344,9 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Запуск или сброс таймера игры
+     */
     private fun startOrResetTimer() {
         gameTimer?.cancel()
         if (timerDurationSec > 0 && !isFirstMove) {
@@ -310,31 +366,46 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Обработка окончания игры по таймеру
+     */
     private fun gameOverByTimer() {
-        game.resetGame() // сбрасываем игровое поле
+        game.resetGame() // Сбрасываем игровое поле
         updateGameStatusDrawByTimer()
         // Очищаем кнопки
         buttons.forEach { it.text = "" }
     }
 
+    /**
+     * Обновление статуса игры при ничьей по таймеру
+     */
     private fun updateGameStatusDrawByTimer() {
         gameStatusText.text = getString(R.string.timer_draw)
         gameStatusText.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
     }
 
+    /**
+     * Настройка игры при запуске
+     */
     private fun setupGame() {
         createGameBoard()
         updateGameStatus()
-        updateTimerVisibility() // обновляем видимость таймера
+        updateTimerVisibility() // Обновляем видимость таймера
     }
 
+    /**
+     * Создание игрового поля с кнопками
+     */
     private fun createGameBoard() {
-        gameBoard.removeAllViews()
+        gameBoard.removeAllViews() // Очищаем поле
         val boardSize = game.getBoardSize()
-        buttons = Array(boardSize * boardSize) { Button(this) }
+        buttons = Array(boardSize * boardSize) { Button(this) } // Создаем массив кнопок
         gameBoard.columnCount = boardSize
         gameBoard.rowCount = boardSize
+        
+        // Настраиваем каждую кнопку
         buttons.forEachIndexed { index, button ->
+            // Параметры расположения кнопки в сетке
             val params = GridLayout.LayoutParams()
             params.width = 0
             params.height = 0
@@ -342,6 +413,8 @@ class GameActivity : AppCompatActivity() {
             params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
             params.setMargins(4, 4, 4, 4)
             button.layoutParams = params
+            
+            // Размер текста в зависимости от размера поля
             button.textSize = when (boardSize) {
                 3 -> 24f
                 4 -> 20f
@@ -355,10 +428,13 @@ class GameActivity : AppCompatActivity() {
             button.setBackgroundResource(R.drawable.game_button_background)
             button.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
             
+            // Обработчик нажатия на кнопку
             button.setOnClickListener {
                 if (game.getFreeChoiceMode()) {
+                    // В режиме свободного выбора показываем диалог выбора символа
                     showSymbolSelectionDialog(index)
                 } else {
+                    // В обычном режиме делаем ход автоматически
                     if (game.makeMove(index)) {
                         val player = game.getLastMovePlayer()
                         button.text = player
@@ -368,6 +444,7 @@ class GameActivity : AppCompatActivity() {
                         // Добавляем неоновое свечение ТОЛЬКО к символам игроков
                         button.setShadowLayer(8f, 0f, 0f, playerColor)
                         
+                        // Запускаем таймер после первого хода
                         if (isFirstMove) {
                             isFirstMove = false
                             startOrResetTimer()
@@ -385,6 +462,9 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Обновление статуса игры
+     */
     private fun updateGameStatus() {
         gameStatusText.text = game.getGameStatus()
         // Подсвечиваем текущего игрока
@@ -392,6 +472,9 @@ class GameActivity : AppCompatActivity() {
         gameStatusText.setTextColor(playerColors[currentPlayer] ?: ContextCompat.getColor(this, R.color.text_primary))
     }
 
+    /**
+     * Обновление отображения счета
+     */
     private fun updateScoreDisplay() {
         scoreText.text = game.getScoreText()
     }

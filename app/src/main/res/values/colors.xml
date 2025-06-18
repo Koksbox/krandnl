@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Базовые цвета -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     
     <!-- Основные цвета приложения (чёрно-фиолетовая тема) -->
-    <color name="primary">#FF8B5CF6</color>
-    <color name="primary_dark">#FF1E1B4B</color>
-    <color name="primary_light">#FFA78BFA</color>
-    <color name="accent">#FF7C3AED</color>
+    <color name="primary">#FF8B5CF6</color> <!-- Основной фиолетовый цвет -->
+    <color name="primary_dark">#FF1E1B4B</color> <!-- Тёмный фиолетовый для фонов -->
+    <color name="primary_light">#FFA78BFA</color> <!-- Светлый фиолетовый для акцентов -->
+    <color name="accent">#FF7C3AED</color> <!-- Акцентный фиолетовый -->
     
     <!-- Фоновые цвета (чёрно-фиолетовая тема) -->
-    <color name="background_primary">#FF0A0A0A</color>
-    <color name="background_secondary">#FF1E1B4B</color>
-    <color name="background_card">#FF312E81</color>
-    <color name="background_button">#FF4338CA</color>
+    <color name="background_primary">#FF0A0A0A</color> <!-- Основной тёмный фон -->
+    <color name="background_secondary">#FF1E1B4B</color> <!-- Вторичный тёмно-фиолетовый фон -->
+    <color name="background_card">#FF312E81</color> <!-- Фон для карточек и панелей -->
+    <color name="background_button">#FF4338CA</color> <!-- Фон для кнопок -->
     
     <!-- Неоновые цвета ТОЛЬКО для символов игроков -->
-    <color name="player_x">#FFFF1744</color>
-    <color name="player_o">#FF00E676</color>
-    <color name="player_brackets">#FF2979FF</color>
-    <color name="player_hash">#FFFF9100</color>
+    <color name="player_x">#FFFF1744</color> <!-- Красный неон для игрока X -->
+    <color name="player_o">#FF00E676</color> <!-- Бирюзовый неон для игрока O -->
+    <color name="player_brackets">#FF2979FF</color> <!-- Голубой неон для игрока [] -->
+    <color name="player_hash">#FFFF9100</color> <!-- Мятный неон для игрока # -->
     
     <!-- Текстовые цвета (чёрно-фиолетовая тема) -->
-    <color name="text_primary">#FFFFFFFF</color>
-    <color name="text_secondary">#FFC7D2FE</color>
-    <color name="text_light">#FF818CF8</color>
+    <color name="text_primary">#FFFFFFFF</color> <!-- Основной белый текст -->
+    <color name="text_secondary">#FFC7D2FE</color> <!-- Вторичный светло-фиолетовый текст -->
+    <color name="text_light">#FF818CF8</color> <!-- Светлый фиолетовый текст -->
     
-    <!-- Градиентные цвета -->
-    <color name="gradient_start">#FF0A0A0A</color>
-    <color name="gradient_end">#FF1E1B4B</color>
+    <!-- Градиентные цвета для фоновых эффектов -->
+    <color name="gradient_start">#FF0A0A0A</color> <!-- Начало градиента (чёрный) -->
+    <color name="gradient_end">#FF1E1B4B</color> <!-- Конец градиента (тёмно-фиолетовый) -->
     
-    <!-- Тени -->
-    <color name="shadow_light">#33000000</color>
-    <color name="shadow_medium">#66000000</color>
+    <!-- Тени для создания глубины -->
+    <color name="shadow_light">#33000000</color> <!-- Лёгкая тень (30% прозрачности) -->
+    <color name="shadow_medium">#66000000</color> <!-- Средняя тень (40% прозрачности) -->
     
-    <!-- Фиолетовые акценты -->
-    <color name="purple_dark">#FF4C1D95</color>
-    <color name="purple_medium">#FF7C3AED</color>
-    <color name="purple_light">#FFA78BFA</color>
+    <!-- Фиолетовые акценты для различных элементов -->
+    <color name="purple_dark">#FF4C1D95</color> <!-- Тёмный фиолетовый акцент -->
+    <color name="purple_medium">#FF7C3AED</color> <!-- Средний фиолетовый акцент -->
+    <color name="purple_light">#FFA78BFA</color> <!-- Светлый фиолетовый акцент -->
 </resources>

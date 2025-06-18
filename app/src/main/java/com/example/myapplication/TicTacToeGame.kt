@@ -2,25 +2,35 @@ package com.example.myapplication
 
 import android.content.Context
 
+/**
+ * Класс игровой логики для игры в крестики-нолики
+ * Содержит всю логику игры, включая различные режимы и проверку победных комбинаций
+ */
 class TicTacToeGame(private val context: Context) {
-    private var currentPlayer = "X"
-    private var gameState: Array<String> = Array(9) { "" }
-    private var gameActive = true
-    private var winner: String? = null
-    private var lastMovePlayer: String = "X"
-    private var boardSize = 3
+    // Основные игровые переменные
+    private var currentPlayer = "X" // Текущий игрок
+    private var gameState: Array<String> = Array(9) { "" } // Состояние игрового поля
+    private var gameActive = true // Активна ли игра
+    private var winner: String? = null // Победитель (null если нет)
+    private var lastMovePlayer: String = "X" // Игрок, сделавший последний ход
+    private var boardSize = 3 // Размер игрового поля
+    
+    // Массив доступных игроков
     private val players = arrayOf("X", "O", "[]", "#")
     
     // Система подсчета побед
     private val playerScores = mutableMapOf("X" to 0, "O" to 0, "[]" to 0, "#" to 0)
-    private var totalGames = 0
-    // Флаг режима Misere
-    var isMisereMode: Boolean = false
-    // Флаг режима Гомоку
-    var isGomokuMode: Boolean = false
-    // Флаг режима Свободный выбор символов
-    var isFreeChoiceMode: Boolean = false
+    private var totalGames = 0 // Общее количество игр
+    
+    // Флаги специальных режимов игры
+    var isMisereMode: Boolean = false // Режим поддавки (проигрывает тот, кто соберет ряд)
+    var isGomokuMode: Boolean = false // Режим Гомоку (5 в ряд на поле 15x15)
+    var isFreeChoiceMode: Boolean = false // Режим свободного выбора символов
 
+    /**
+     * Установка размера игрового поля
+     * @param size Размер поля (от 3 до 19)
+     */
     fun setBoardSize(size: Int) {
         if (size in 3..19) {
             boardSize = size
@@ -29,6 +39,10 @@ class TicTacToeGame(private val context: Context) {
         }
     }
 
+    /**
+     * Включение/выключение режима поддавки (Misere)
+     * @param enabled true для включения режима поддавки
+     */
     fun applyMisereMode(enabled: Boolean) {
         isMisereMode = enabled
         isGomokuMode = false // Отключаем Гомоку при включении Misere
@@ -37,6 +51,10 @@ class TicTacToeGame(private val context: Context) {
         resetScores()
     }
 
+    /**
+     * Включение/выключение режима Гомоку
+     * @param enabled true для включения режима Гомоку
+     */
     fun applyGomokuMode(enabled: Boolean) {
         isGomokuMode = enabled
         isMisereMode = false // Отключаем Misere при включении Гомоку
@@ -48,6 +66,10 @@ class TicTacToeGame(private val context: Context) {
         resetScores()
     }
 
+    /**
+     * Включение/выключение режима свободного выбора символов
+     * @param enabled true для включения режима свободного выбора
+     */
     fun applyFreeChoiceMode(enabled: Boolean) {
         isFreeChoiceMode = enabled
         isMisereMode = false // Отключаем Misere при включении Свободного выбора
@@ -59,16 +81,22 @@ class TicTacToeGame(private val context: Context) {
         resetScores()
     }
 
+    // Геттеры для режимов игры
     fun getMisereMode(): Boolean = isMisereMode
     fun getGomokuMode(): Boolean = isGomokuMode
     fun getFreeChoiceMode(): Boolean = isFreeChoiceMode
 
+    // Геттеры для игрового состояния
     fun getBoardSize(): Int = boardSize
-
     fun getPlayers(): Array<String> = players
-
     fun getCurrentPlayerIndex(): Int = players.indexOf(currentPlayer)
 
+    /**
+     * Выполнение хода игрока
+     * @param position Позиция на поле (индекс от 0 до boardSize*boardSize-1)
+     * @param symbol Символ для хода (используется только в режиме свободного выбора)
+     * @return true если ход выполнен успешно, false если ход невозможен
+     */
     fun makeMove(position: Int, symbol: String = ""): Boolean {
         val totalCells = boardSize * boardSize
         // Проверяем, можно ли сделать ход
@@ -78,9 +106,9 @@ class TicTacToeGame(private val context: Context) {
 
         // Определяем символ для хода
         val moveSymbol = if (isFreeChoiceMode && symbol.isNotEmpty()) {
-            symbol
+            symbol // В режиме свободного выбора используем выбранный символ
         } else {
-            currentPlayer
+            currentPlayer // В обычном режиме используем символ текущего игрока
         }
 
         // Сохраняем игрока, который делает ход
@@ -99,6 +127,7 @@ class TicTacToeGame(private val context: Context) {
                 winner = misereWinner
                 playerScores[misereWinner] = playerScores[misereWinner]!! + 1
             } else {
+                // Обычный режим: победитель тот, кто собрал ряд
                 winner = currentPlayer
                 playerScores[currentPlayer] = playerScores[currentPlayer]!! + 1
             }
@@ -120,36 +149,44 @@ class TicTacToeGame(private val context: Context) {
         return true
     }
 
+    /**
+     * Получение количества активных игроков в зависимости от режима
+     * @return Количество игроков
+     */
     private fun getActivePlayerCount(): Int {
         return when {
-            isGomokuMode -> 2
+            isGomokuMode -> 2 // Гомоку всегда для 2 игроков
             isFreeChoiceMode -> 2 // Свободный выбор всегда для 2 игроков
-            boardSize >= 5 -> 4
-            else -> 2
+            boardSize >= 5 -> 4 // Большие поля для 4 игроков
+            else -> 2 // Маленькие поля для 2 игроков
         }
     }
 
+    // Геттеры для игрового состояния
     fun getCurrentPlayer(): String = currentPlayer
-
     fun getLastMovePlayer(): String = lastMovePlayer
-
     fun isGameActive(): Boolean = gameActive
-
     fun getGameState(): Array<String> = gameState.clone()
 
+    /**
+     * Сброс текущей игры
+     */
     fun resetGame() {
         currentPlayer = "X"
         lastMovePlayer = "X"
-        gameState = Array(boardSize * boardSize) { "" }
+        gameState = Array(boardSize * boardSize) { "" } // Создаем новое пустое поле
         gameActive = true
         winner = null
     }
 
     // Методы для работы со счетом
     fun getPlayerScore(player: String): Int = playerScores[player] ?: 0
-    
     fun getTotalGames(): Int = totalGames
     
+    /**
+     * Формирование текста счета для отображения
+     * @return Строка с текущим счетом всех игроков
+     */
     fun getScoreText(): String {
         val activePlayers = getActivePlayerCount()
         return buildString {
@@ -163,15 +200,23 @@ class TicTacToeGame(private val context: Context) {
         }
     }
     
+    /**
+     * Сброс всех счетов
+     */
     fun resetScores() {
         playerScores.clear()
         playerScores.putAll(mapOf("X" to 0, "O" to 0, "[]" to 0, "#" to 0))
         totalGames = 0
     }
 
+    /**
+     * Получение текущего статуса игры для отображения
+     * @return Строка с описанием текущего состояния игры
+     */
     fun getGameStatus(): String {
         return when {
             !gameActive && winner != null -> {
+                // Игра окончена, есть победитель
                 if (isMisereMode) {
                     return context.getString(R.string.misere_winner, winner)
                 }
@@ -181,6 +226,7 @@ class TicTacToeGame(private val context: Context) {
                 if (isFreeChoiceMode) {
                     return context.getString(R.string.free_choice_winner, winner)
                 }
+                // Обычные режимы
                 when (winner) {
                     "X" -> context.getString(R.string.player_x_wins)
                     "O" -> context.getString(R.string.player_o_wins)
@@ -189,8 +235,9 @@ class TicTacToeGame(private val context: Context) {
                     else -> context.getString(R.string.player_wins, winner)
                 }
             }
-            !gameActive -> context.getString(R.string.draw)
+            !gameActive -> context.getString(R.string.draw) // Ничья
             else -> {
+                // Игра активна, показываем чей ход
                 when (currentPlayer) {
                     "X" -> context.getString(R.string.player_x_turn)
                     "O" -> context.getString(R.string.player_o_turn)
@@ -202,7 +249,13 @@ class TicTacToeGame(private val context: Context) {
         }
     }
 
+    /**
+     * Проверка победной комбинации для игрока
+     * @param player Символ игрока для проверки
+     * @return true если игрок выиграл, false иначе
+     */
     private fun checkWinner(player: String): Boolean {
+        // Определяем длину победной комбинации в зависимости от режима
         val winLength = when {
             isGomokuMode -> 5 // Гомоку: 5 в ряд
             isFreeChoiceMode -> 3 // Свободный выбор: всегда 3 в ряд
@@ -266,6 +319,6 @@ class TicTacToeGame(private val context: Context) {
             }
         }
 
-        return false
+        return false // Победная комбинация не найдена
     }
 } 

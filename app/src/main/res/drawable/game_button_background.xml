@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Селектор для фона игровых кнопок - определяет внешний вид в разных состояниях -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Состояние нажатия - когда кнопка нажата -->
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/background_button" />
+            <solid android:color="@color/background_button" /> <!-- Основной цвет фона -->
             <stroke
                 android:width="2dp"
-                android:color="@color/primary" />
-            <corners android:radius="16dp" />
+                android:color="@color/primary" /> <!-- Фиолетовая рамка -->
+            <corners android:radius="16dp" /> <!-- Скругленные углы -->
             <gradient
                 android:angle="45"
                 android:startColor="@color/background_button"
                 android:endColor="@color/purple_medium"
-                android:type="linear" />
+                android:type="linear" /> <!-- Градиент для эффекта глубины -->
         </shape>
     </item>
+    <!-- Обычное состояние - когда кнопка не нажата -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/background_card" />
+            <solid android:color="@color/background_card" /> <!-- Основной цвет фона -->
             <stroke
                 android:width="1dp"
-                android:color="@color/text_light" />
-            <corners android:radius="16dp" />
+                android:color="@color/text_light" /> <!-- Светло-фиолетовая рамка -->
+            <corners android:radius="16dp" /> <!-- Скругленные углы -->
             <gradient
                 android:angle="45"
                 android:startColor="@color/background_card"
                 android:endColor="@color/background_button"
-                android:type="linear" />
+                android:type="linear" /> <!-- Градиент для эффекта глубины -->
         </shape>
     </item>
 </selector> 

@@ -1,78 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Базовый стиль приложения -->
+    <!-- Базовый стиль приложения - определяет общую тему и цвета -->
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item>
-        <item name="android:windowBackground">@color/background_primary</item>
-        <item name="android:statusBarColor">@color/background_primary</item>
-        <item name="android:navigationBarColor">@color/background_primary</item>
+        <item name="colorPrimary">@color/primary</item> <!-- Основной цвет приложения -->
+        <item name="colorPrimaryDark">@color/primary_dark</item> <!-- Цвет статус-бара -->
+        <item name="colorAccent">@color/accent</item> <!-- Акцентный цвет -->
+        <item name="android:windowBackground">@color/background_primary</item> <!-- Фон окна -->
+        <item name="android:statusBarColor">@color/background_primary</item> <!-- Цвет статус-бара -->
+        <item name="android:navigationBarColor">@color/background_primary</item> <!-- Цвет навигационной панели -->
     </style>
 
-    <!-- Стиль для текста статуса -->
+    <!-- Стиль для текста статуса - используется для отображения счета и статуса игры -->
     <style name="StatusText">
-        <item name="android:textColor">@color/text_primary</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/status_background</item>
-        <item name="android:padding">12dp</item>
-        <item name="android:layout_margin">4dp</item>
-        <item name="android:elevation">6dp</item>
-        <item name="android:shadowColor">@color/primary</item>
-        <item name="android:shadowDx">0</item>
-        <item name="android:shadowDy">0</item>
-        <item name="android:shadowRadius">4</item>
+        <item name="android:textColor">@color/text_primary</item> <!-- Белый цвет текста -->
+        <item name="android:textSize">16sp</item> <!-- Размер шрифта -->
+        <item name="android:textStyle">bold</item> <!-- Жирный шрифт -->
+        <item name="android:gravity">center</item> <!-- Центрирование текста -->
+        <item name="android:background">@drawable/status_background</item> <!-- Фон с градиентом -->
+        <item name="android:padding">12dp</item> <!-- Внутренние отступы -->
+        <item name="android:layout_margin">4dp</item> <!-- Внешние отступы -->
+        <item name="android:elevation">6dp</item> <!-- Тень для создания глубины -->
+        <item name="android:shadowColor">@color/primary</item> <!-- Цвет тени текста -->
+        <item name="android:shadowDx">0</item> <!-- Смещение тени по X -->
+        <item name="android:shadowDy">0</item> <!-- Смещение тени по Y -->
+        <item name="android:shadowRadius">4</item> <!-- Радиус размытия тени -->
     </style>
 
-    <!-- Стиль для игрового поля -->
+    <!-- Стиль для игрового поля - контейнер для кнопок игры -->
     <style name="GameBoard">
-        <item name="android:background">@drawable/game_board_background</item>
-        <item name="android:padding">12dp</item>
-        <item name="android:elevation">12dp</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:background">@drawable/game_board_background</item> <!-- Фон с градиентом и тенью -->
+        <item name="android:padding">12dp</item> <!-- Внутренние отступы -->
+        <item name="android:elevation">12dp</item> <!-- Тень для создания глубины -->
+        <item name="android:layout_margin">8dp</item> <!-- Внешние отступы -->
     </style>
 
-    <!-- Стиль для кнопок меню -->
+    <!-- Стиль для кнопок меню - кнопка с иконкой меню -->
     <style name="MenuButton">
-        <item name="android:background">@drawable/menu_background</item>
-        <item name="android:padding">12dp</item>
-        <item name="android:elevation">8dp</item>
-        <item name="android:layout_margin">4dp</item>
+        <item name="android:background">@drawable/menu_background</item> <!-- Фон с градиентом -->
+        <item name="android:padding">12dp</item> <!-- Внутренние отступы -->
+        <item name="android:elevation">8dp</item> <!-- Тень для создания глубины -->
+        <item name="android:layout_margin">4dp</item> <!-- Внешние отступы -->
     </style>
 
-    <!-- Стиль для заголовков -->
+    <!-- Стиль для заголовков - используется для названия игры -->
     <style name="TitleText">
-        <item name="android:textColor">@color/primary</item>
-        <item name="android:textSize">28sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/primary</item> <!-- Фиолетовый цвет текста -->
+        <item name="android:textSize">28sp</item> <!-- Большой размер шрифта -->
+        <item name="android:textStyle">bold</item> <!-- Жирный шрифт -->
+        <item name="android:gravity">center</item> <!-- Центрирование текста -->
     </style>
 
-    <!-- Стиль для игровых кнопок -->
+    <!-- Стиль для игровых кнопок - кнопки на игровом поле -->
     <style name="GameButton">
-        <item name="android:background">@drawable/game_button_background</item>
-        <item name="android:textColor">@color/text_primary</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:gravity">center</item>
-        <item name="android:elevation">4dp</item>
-        <item name="android:paddingStart">24dp</item>
-        <item name="android:paddingEnd">24dp</item>
+        <item name="android:background">@drawable/game_button_background</item> <!-- Фон с градиентом -->
+        <item name="android:textColor">@color/text_primary</item> <!-- Белый цвет текста -->
+        <item name="android:textStyle">bold</item> <!-- Жирный шрифт -->
+        <item name="android:gravity">center</item> <!-- Центрирование текста -->
+        <item name="android:elevation">4dp</item> <!-- Тень для создания глубины -->
+        <item name="android:paddingStart">24dp</item> <!-- Левый отступ -->
+        <item name="android:paddingEnd">24dp</item> <!-- Правый отступ -->
     </style>
 
-    <!-- Стиль для кнопок управления -->
+    <!-- Стиль для кнопок управления - кнопки в диалогах -->
     <style name="ControlButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:layout_margin">8dp</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:background">@drawable/control_button_background</item>
-        <item name="android:elevation">6dp</item>
-        <item name="android:stateListAnimator">@null</item>
-        <item name="android:paddingStart">24dp</item>
-        <item name="android:paddingEnd">24dp</item>
+        <item name="android:layout_width">wrap_content</item> <!-- Ширина по содержимому -->
+        <item name="android:layout_height">48dp</item> <!-- Фиксированная высота -->
+        <item name="android:layout_margin">8dp</item> <!-- Внешние отступы -->
+        <item name="android:textSize">16sp</item> <!-- Размер шрифта -->
+        <item name="android:textStyle">bold</item> <!-- Жирный шрифт -->
+        <item name="android:textColor">@color/white</item> <!-- Белый цвет текста -->
+        <item name="android:background">@drawable/control_button_background</item> <!-- Фон с градиентом -->
+        <item name="android:elevation">6dp</item> <!-- Тень для создания глубины -->
+        <item name="android:stateListAnimator">@null</item> <!-- Отключение анимации состояния -->
+        <item name="android:paddingStart">24dp</item> <!-- Левый отступ -->
+        <item name="android:paddingEnd">24dp</item> <!-- Правый отступ -->
     </style>
 </resources> 

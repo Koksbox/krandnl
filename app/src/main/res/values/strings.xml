@@ -1,36 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Основные строки приложения -->
     <string name="app_name">Крестики-нолики</string>
+    
+    <!-- Строки для отображения хода игроков -->
     <string name="player_x_turn">Ход игрока X</string>
     <string name="player_o_turn">Ход игрока O</string>
     <string name="player_brackets_turn">Ход игрока []</string>
     <string name="player_hash_turn">Ход игрока #</string>
+    
+    <!-- Строки для отображения победителей -->
     <string name="player_x_wins">Игрок X победил!</string>
     <string name="player_o_wins">Игрок O победил!</string>
     <string name="player_brackets_wins">Игрок [] победил!</string>
     <string name="player_hash_wins">Игрок # победил!</string>
     <string name="draw">Ничья!</string>
+    
+    <!-- Строки для управления игрой -->
     <string name="reset_game">Новая игра</string>
     <string name="game_mode">Режим игры</string>
     <string name="select_board_size">Выберите размер поля</string>
     <string name="cancel">Отмена</string>
+    
+    <!-- Динамические строки с параметрами -->
     <string name="player_turn">Ход игрока %s</string>
     <string name="player_wins">Игрок %s победил!</string>
     <string name="score">Счет</string>
     <string name="reset_scores">Сбросить счет</string>
     <string name="total_games">Игр: %d</string>
+    
+    <!-- Строки для уведомлений -->
     <string name="score_reset_title">Счет сброшен</string>
     <string name="score_reset_message">При смене размера поля счет был сброшен. Начинайте новую игру!</string>
+    
+    <!-- Строки для специальных режимов -->
     <string name="misere_winner">Победитель (поддавки): %s</string>
     <string name="select_game_mode">Выберите режим игры</string>
     <string name="gomoku_winner">Победитель (Гомоку): %s</string>
+    
+    <!-- Строки для меню и правил -->
     <string name="rules">Правила игры</string>
     <string name="menu">Меню</string>
     <string name="rules_title">Правила игры</string>
+    
+    <!-- Подробные правила для каждого режима -->
     <string name="rules_classic">Классические режимы (3x3, 4x4, 5x5, 6x6):\n• Цель: собрать ряд из своих символов\n• 3x3, 4x4: заполнить всю строку/столбец/диагональ\n• 5x5, 6x6: собрать 4 в ряд\n• Игроки: 2 (3x3, 4x4) или 4 (5x5, 6x6)</string>
     <string name="rules_misere">Режим Misere (Поддавки) - 3x3:\n• Цель: НЕ собирать ряд из своих символов\n• Проигрывает тот, кто соберет 3 в ряд\n• Побеждает следующий игрок\n• Игроки: 2</string>
     <string name="rules_gomoku">Режим Гомоку - 15x15:\n• Цель: собрать 5 символов в ряд\n• Горизонтально, вертикально или диагонально\n• Восточноазиатская игра\n• Игроки: 2</string>
     <string name="rules_general">Общие правила:\n• Игроки ходят по очереди\n• Нельзя ходить в занятую клетку\n• Счет сохраняется в каждом режиме\n• При смене режима счет сбрасывается</string>
+    
+    <!-- Строки для таймера -->
     <string name="timer">Таймер: %d сек.</string>
     <string name="timer_draw">Время вышло! Ничья.</string>
     <string name="select_timer">Выберите время на игру</string>
@@ -43,6 +62,8 @@
     <string name="timer_90">90 секунд</string>
     <string name="timer_105">105 секунд</string>
     <string name="timer_120">120 секунд</string>
+    
+    <!-- Строки для режима свободного выбора -->
     <string name="free_choice_mode">Свободный выбор символов</string>
     <string name="select_symbol">Выберите символ для хода</string>
     <string name="free_choice_winner">Победитель (Свободный выбор): %s</string>

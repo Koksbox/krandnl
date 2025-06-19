@@ -23,6 +23,7 @@ class GameActivity : AppCompatActivity() {
     private lateinit var scoreText: TextView // Текст счета
     private lateinit var gameBoard: GridLayout // Игровое поле
     private lateinit var menuButton: ImageButton // Кнопка меню
+    private lateinit var newGameButton: ImageButton // Кнопка новой игры
     private var buttons: Array<Button> = arrayOf() // Массив кнопок игрового поля
 
     // Цвета для игроков из ресурсов
@@ -57,12 +58,14 @@ class GameActivity : AppCompatActivity() {
         gameBoard = findViewById(R.id.gameBoard)
         menuButton = findViewById(R.id.menuButton)
         timerText = findViewById(R.id.timerText)
+        newGameButton = findViewById(R.id.newGameButton)
 
         // Настройка игры
         setupGame()
         setupMenuButton()
         updateScoreDisplay()
         updateTimerVisibility() // Обновляем видимость таймера
+        setupNewGameButton()
     }
 
     /**
@@ -71,6 +74,15 @@ class GameActivity : AppCompatActivity() {
     private fun setupMenuButton() {
         menuButton.setOnClickListener {
             showMenuDialog()
+        }
+    }
+
+    /**
+     * Настройка кнопки новой игры
+     */
+    private fun setupNewGameButton() {
+        newGameButton.setOnClickListener {
+            resetGame()
         }
     }
 

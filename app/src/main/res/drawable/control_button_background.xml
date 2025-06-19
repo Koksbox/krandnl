@@ -4,11 +4,9 @@
     
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
-            <gradient
-                android:angle="45"
-                android:startColor="@color/primary"
-                android:endColor="@color/accent" />
+            <solid android:color="@color/black" />
             <corners android:radius="24dp" />
+            <stroke android:width="2dp" android:color="@color/primary" />
         </shape>
     </item>
     

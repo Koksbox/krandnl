@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="320dp"
+    android:orientation="vertical"
+    android:background="@drawable/menu_background"
+    android:padding="24dp">
+
+    <!-- Пример кнопки меню -->
+    <Button
+        android:id="@+id/btnGameMode"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Режим игры"
+        android:textColor="@color/primary"
+        android:background="@drawable/game_button_background"
+        android:drawableStart="@drawable/ic_menu"
+        android:gravity="center_vertical|start"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnNewGame"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Новая игра"
+        android:textColor="@color/primary"
+        android:background="@drawable/game_button_background"
+        android:drawableStart="@android:drawable/ic_menu_rotate"
+        android:gravity="center_vertical|start"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnResetScores"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Сбросить счет"
+        android:textColor="@color/primary"
+        android:background="@drawable/game_button_background"
+        android:drawableStart="@android:drawable/ic_menu_delete"
+        android:gravity="center_vertical|start"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnRules"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Правила игры"
+        android:textColor="@color/primary"
+        android:background="@drawable/game_button_background"
+        android:drawableStart="@android:drawable/ic_menu_info_details"
+        android:gravity="center_vertical|start"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnTimer"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Таймер"
+        android:textColor="@color/primary"
+        android:background="@drawable/game_button_background"
+        android:drawableStart="@android:drawable/ic_menu_recent_history"
+        android:gravity="center_vertical|start"
+        android:layout_marginBottom="0dp" />
+
+</LinearLayout> 

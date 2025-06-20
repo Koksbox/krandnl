@@ -11,6 +11,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.os.CountDownTimer
+import android.app.Dialog
+import android.view.LayoutInflater
+import android.widget.RadioButton
+import android.widget.RadioGroup
 
 /**
  * Главная активность игры в крестики-нолики
@@ -88,30 +92,33 @@ class GameActivity : AppCompatActivity() {
      * Показ диалога меню с опциями игры
      */
     private fun showMenuDialog() {
-        val menuItems = arrayOf(
-            getString(R.string.game_mode),
-            getString(R.string.reset_game),
-            getString(R.string.reset_scores),
-            getString(R.string.rules),
-            getString(R.string.select_timer)
-        )
+        val dialog = Dialog(this)
+        val view = LayoutInflater.from(this).inflate(R.layout.menu_dialog, null)
+        dialog.setContentView(view)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.menu))
-            .setItems(menuItems) { dialog, which ->
-                when (which) {
-                    0 -> showSizeSelectionDialog() // Выбор режима игры
-                    1 -> resetGame() // Сброс игры
-                    2 -> showResetScoresDialog() // Сброс счета
-                    3 -> showRulesDialog() // Правила
-                    4 -> showTimerSelectionDialog() // Выбор таймера
-                }
-                dialog.dismiss()
-            }
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+        view.findViewById<Button>(R.id.btnGameMode).setOnClickListener {
+            showSizeSelectionDialog()
+            dialog.dismiss()
+        }
+        view.findViewById<Button>(R.id.btnNewGame).setOnClickListener {
+            resetGame()
+            dialog.dismiss()
+        }
+        view.findViewById<Button>(R.id.btnResetScores).setOnClickListener {
+            showResetScoresDialog()
+            dialog.dismiss()
+        }
+        view.findViewById<Button>(R.id.btnRules).setOnClickListener {
+            showRulesDialog()
+            dialog.dismiss()
+        }
+        view.findViewById<Button>(R.id.btnTimer).setOnClickListener {
+            showTimerSelectionDialog()
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     /**
@@ -129,6 +136,11 @@ class GameActivity : AppCompatActivity() {
      * Показ диалога с правилами игры
      */
     private fun showRulesDialog() {
+        val dialog = Dialog(this)
+        val view = LayoutInflater.from(this).inflate(R.layout.dialog_rules, null)
+        dialog.setContentView(view)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
         val rulesText = buildString {
             append(getString(R.string.rules_general))
             append("\n\n")
@@ -140,38 +152,38 @@ class GameActivity : AppCompatActivity() {
             append("\n\n")
             append(getString(R.string.rules_free_choice))
         }
-
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.rules_title))
-            .setMessage(rulesText)
-            .setPositiveButton("OK") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+        view.findViewById<TextView>(R.id.rulesText).text = rulesText
+        view.findViewById<Button>(R.id.btnOk).setOnClickListener { dialog.dismiss() }
+        dialog.show()
     }
 
     /**
      * Показ диалога подтверждения сброса счета
      */
     private fun showResetScoresDialog() {
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.reset_scores))
-            .setMessage("Вы уверены, что хотите сбросить счет всех игроков?")
-            .setPositiveButton("Да") { dialog, _ ->
-                game.resetScores()
-                updateScoreDisplay()
-                dialog.dismiss()
-            }
-            .setNegativeButton("Нет") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+        val dialog = Dialog(this)
+        val view = LayoutInflater.from(this).inflate(R.layout.dialog_reset_scores, null)
+        dialog.setContentView(view)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        view.findViewById<Button>(R.id.btnYes).setOnClickListener {
+            game.resetScores()
+            updateScoreDisplay()
+            dialog.dismiss()
+        }
+        view.findViewById<Button>(R.id.btnNo).setOnClickListener { dialog.dismiss() }
+        dialog.show()
     }
 
     /**
      * Показ диалога выбора размера поля и режима игры
      */
     private fun showSizeSelectionDialog() {
+        val dialog = Dialog(this)
+        val view = LayoutInflater.from(this).inflate(R.layout.dialog_mode, null)
+        dialog.setContentView(view)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
         val modes = arrayOf("3x3", "4x4", "5x5", "6x6", "3x3 Misere (Поддавки)", "10x10 Гомоку", "Свободный выбор символов")
         val currentSize = game.getBoardSize()
         val currentMode = when {
@@ -180,46 +192,46 @@ class GameActivity : AppCompatActivity() {
             game.getFreeChoiceMode() -> 6 // Свободный выбор
             else -> currentSize - 3 // Классические режимы
         }
-        
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.select_game_mode))
-            .setSingleChoiceItems(modes, currentMode) { dialog, which ->
-                when (which) {
-                    4 -> {
-                        // Режим поддавки (Misere)
-                        game.setBoardSize(3)
-                        game.applyMisereMode(true)
-                    }
-                    5 -> {
-                        // Режим Гомоку
-                        game.applyGomokuMode(true)
-                    }
-                    6 -> {
-                        // Режим свободного выбора символов
-                        showFreeChoiceSizeDialog()
-                    }
-                    else -> {
-                        // Классические режимы
-                        val newSize = which + 3
-                        game.setBoardSize(newSize)
-                        game.applyMisereMode(false)
-                        game.applyGomokuMode(false)
-                        game.applyFreeChoiceMode(false)
-                    }
+        val radioGroup = view.findViewById<RadioGroup>(R.id.modeRadioGroup)
+        modes.forEachIndexed { i, mode ->
+            val rb = RadioButton(this)
+            rb.text = mode
+            rb.setTextColor(ContextCompat.getColor(this, R.color.white))
+            rb.buttonTintList = ContextCompat.getColorStateList(this, R.color.primary)
+            rb.id = i
+            radioGroup.addView(rb)
+        }
+        radioGroup.check(currentMode)
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                4 -> {
+                    game.setBoardSize(3)
+                    game.applyMisereMode(true)
                 }
-                // Обновляем интерфейс после смены режима
-                createGameBoard()
-                updateGameStatus()
-                updateScoreDisplay()
-                showScoreResetNotification()
-                isFirstMove = true
-                gameTimer?.cancel()
-                dialog.dismiss()
+                5 -> {
+                    game.applyGomokuMode(true)
+                }
+                6 -> {
+                    showFreeChoiceSizeDialog()
+                }
+                else -> {
+                    val newSize = checkedId + 3
+                    game.setBoardSize(newSize)
+                    game.applyMisereMode(false)
+                    game.applyGomokuMode(false)
+                    game.applyFreeChoiceMode(false)
+                }
             }
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+            createGameBoard()
+            updateGameStatus()
+            updateScoreDisplay()
+            showScoreResetNotification()
+            isFirstMove = true
+            gameTimer?.cancel()
+            dialog.dismiss()
+        }
+        view.findViewById<Button>(R.id.btnCancel).setOnClickListener { dialog.dismiss() }
+        dialog.show()
     }
 
     /**
@@ -312,6 +324,11 @@ class GameActivity : AppCompatActivity() {
      * Показ диалога выбора таймера
      */
     private fun showTimerSelectionDialog() {
+        val dialog = Dialog(this)
+        val view = LayoutInflater.from(this).inflate(R.layout.dialog_timer, null)
+        dialog.setContentView(view)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
         val timerOptions = arrayOf(
             getString(R.string.timer_off),
             getString(R.string.timer_15),
@@ -325,16 +342,22 @@ class GameActivity : AppCompatActivity() {
         )
         val timerValues = intArrayOf(0, 15, 30, 45, 60, 75, 90, 105, 120)
         val checkedItem = timerValues.indexOf(timerDurationSec)
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.select_timer))
-            .setSingleChoiceItems(timerOptions, checkedItem) { dialog, which ->
-                timerDurationSec = timerValues[which]
-                dialog.dismiss()
-            }
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+        val radioGroup = view.findViewById<RadioGroup>(R.id.timerRadioGroup)
+        timerOptions.forEachIndexed { i, option ->
+            val rb = RadioButton(this)
+            rb.text = option
+            rb.setTextColor(ContextCompat.getColor(this, R.color.white))
+            rb.buttonTintList = ContextCompat.getColorStateList(this, R.color.primary)
+            rb.id = i
+            radioGroup.addView(rb)
+        }
+        radioGroup.check(checkedItem)
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            timerDurationSec = timerValues[checkedId]
+            dialog.dismiss()
+        }
+        view.findViewById<Button>(R.id.btnCancel).setOnClickListener { dialog.dismiss() }
+        dialog.show()
     }
 
     /**

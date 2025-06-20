@@ -30,11 +30,11 @@ class GameActivity : AppCompatActivity() {
     private lateinit var playerColors: Map<String, Int>
 
     // Компоненты таймера
-    private lateinit var timerText: TextView // Текст таймера
     private var gameTimer: CountDownTimer? = null // Таймер игры
     private var timerDurationSec: Int = 0 // Длительность таймера в секундах (0 = без таймера)
     private var timerMillisLeft: Long = 0L // Оставшееся время в миллисекундах
     private var isFirstMove: Boolean = true // Флаг первого хода (для запуска таймера)
+    private var timerSecondsLeft: Int = 0 // Секунд осталось для отображения
 
     /**
      * Инициализация активности при создании
@@ -57,14 +57,12 @@ class GameActivity : AppCompatActivity() {
         scoreText = findViewById(R.id.scoreText)
         gameBoard = findViewById(R.id.gameBoard)
         menuButton = findViewById(R.id.menuButton)
-        timerText = findViewById(R.id.timerText)
         newGameButton = findViewById(R.id.newGameButton)
 
         // Настройка игры
         setupGame()
         setupMenuButton()
         updateScoreDisplay()
-        updateTimerVisibility() // Обновляем видимость таймера
         setupNewGameButton()
     }
 
@@ -124,7 +122,6 @@ class GameActivity : AppCompatActivity() {
         buttons.forEach { it.text = "" } // Очищаем все кнопки
         isFirstMove = true // Сбрасываем флаг первого хода
         updateGameStatus()
-        updateTimerVisibility() // Обновляем видимость таймера
         gameTimer?.cancel() // Останавливаем таймер
     }
 
@@ -175,7 +172,7 @@ class GameActivity : AppCompatActivity() {
      * Показ диалога выбора размера поля и режима игры
      */
     private fun showSizeSelectionDialog() {
-        val modes = arrayOf("3x3", "4x4", "5x5", "6x6", "3x3 Misere (Поддавки)", "15x15 Гомоку", "Свободный выбор символов")
+        val modes = arrayOf("3x3", "4x4", "5x5", "6x6", "3x3 Misere (Поддавки)", "10x10 Гомоку", "Свободный выбор символов")
         val currentSize = game.getBoardSize()
         val currentMode = when {
             game.getGomokuMode() -> 5 // Гомоку
@@ -216,7 +213,6 @@ class GameActivity : AppCompatActivity() {
                 updateScoreDisplay()
                 showScoreResetNotification()
                 isFirstMove = true
-                updateTimerVisibility()
                 gameTimer?.cancel()
                 dialog.dismiss()
             }
@@ -244,7 +240,6 @@ class GameActivity : AppCompatActivity() {
                 updateScoreDisplay()
                 showScoreResetNotification()
                 isFirstMove = true
-                updateTimerVisibility()
                 gameTimer?.cancel()
                 
                 dialog.dismiss()
@@ -334,7 +329,6 @@ class GameActivity : AppCompatActivity() {
             .setTitle(getString(R.string.select_timer))
             .setSingleChoiceItems(timerOptions, checkedItem) { dialog, which ->
                 timerDurationSec = timerValues[which]
-                updateTimerVisibility()
                 dialog.dismiss()
             }
             .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
@@ -344,65 +338,11 @@ class GameActivity : AppCompatActivity() {
     }
 
     /**
-     * Обновление видимости таймера
-     */
-    private fun updateTimerVisibility() {
-        if (timerDurationSec > 0) {
-            timerText.visibility = android.view.View.VISIBLE
-            timerText.text = getString(R.string.timer, timerDurationSec)
-        } else {
-            timerText.visibility = android.view.View.GONE
-            timerText.text = ""
-        }
-    }
-
-    /**
-     * Запуск или сброс таймера игры
-     */
-    private fun startOrResetTimer() {
-        gameTimer?.cancel()
-        if (timerDurationSec > 0 && !isFirstMove) {
-            timerMillisLeft = timerDurationSec * 1000L
-            timerText.text = getString(R.string.timer, timerDurationSec)
-            gameTimer = object : CountDownTimer(timerMillisLeft, 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    timerMillisLeft = millisUntilFinished
-                    val seconds = (millisUntilFinished / 1000).toInt()
-                    timerText.text = getString(R.string.timer, seconds)
-                }
-                override fun onFinish() {
-                    timerText.text = getString(R.string.timer_draw)
-                    gameOverByTimer()
-                }
-            }.start()
-        }
-    }
-
-    /**
-     * Обработка окончания игры по таймеру
-     */
-    private fun gameOverByTimer() {
-        game.resetGame() // Сбрасываем игровое поле
-        updateGameStatusDrawByTimer()
-        // Очищаем кнопки
-        buttons.forEach { it.text = "" }
-    }
-
-    /**
-     * Обновление статуса игры при ничьей по таймеру
-     */
-    private fun updateGameStatusDrawByTimer() {
-        gameStatusText.text = getString(R.string.timer_draw)
-        gameStatusText.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
-    }
-
-    /**
      * Настройка игры при запуске
      */
     private fun setupGame() {
         createGameBoard()
         updateGameStatus()
-        updateTimerVisibility() // Обновляем видимость таймера
     }
 
     /**
@@ -488,6 +428,53 @@ class GameActivity : AppCompatActivity() {
      * Обновление отображения счета
      */
     private fun updateScoreDisplay() {
-        scoreText.text = game.getScoreText()
+        val baseScore = game.getScoreText()
+        val timerPart = if (timerDurationSec > 0 && !isFirstMove) " (сек: $timerSecondsLeft)" else ""
+        scoreText.text = baseScore + timerPart
+    }
+
+    /**
+     * Запуск или сброс таймера игры
+     */
+    private fun startOrResetTimer() {
+        gameTimer?.cancel()
+        if (timerDurationSec > 0 && !isFirstMove) {
+            timerMillisLeft = timerDurationSec * 1000L
+            timerSecondsLeft = timerDurationSec
+            updateScoreDisplay()
+            gameTimer = object : CountDownTimer(timerMillisLeft, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    timerMillisLeft = millisUntilFinished
+                    timerSecondsLeft = (millisUntilFinished / 1000).toInt()
+                    updateScoreDisplay()
+                }
+                override fun onFinish() {
+                    timerSecondsLeft = 0
+                    updateScoreDisplay()
+                    gameOverByTimer()
+                }
+            }.start()
+        } else {
+            timerSecondsLeft = 0
+            updateScoreDisplay()
+        }
+    }
+
+    /**
+     * Обработка окончания игры по таймеру
+     */
+    private fun gameOverByTimer() {
+        game.resetGame() // Сбрасываем игровое поле
+        updateGameStatusDrawByTimer()
+        // Очищаем кнопки
+        buttons.forEach { it.text = "" }
+    }
+
+    /**
+     * Обновление статуса игры при ничьей по таймеру
+     */
+    private fun updateGameStatusDrawByTimer() {
+        gameStatusText.text = getString(R.string.timer_draw)
+        gameStatusText.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
     }
 } 

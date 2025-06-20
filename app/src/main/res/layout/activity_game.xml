@@ -89,7 +89,7 @@
             android:layout_marginBottom="8dp" />
 
         <!-- Таймер - показывает оставшееся время (скрыт по умолчанию) -->
-        <TextView
+        <!-- <TextView
             android:id="@+id/timerText"
             style="@style/StatusText"
             android:layout_width="match_parent"
@@ -97,7 +97,7 @@
             android:text=""
             android:textSize="16sp"
             android:textColor="@color/primary"
-            android:visibility="gone" />
+            android:visibility="gone" /> -->
 
     </LinearLayout>
 

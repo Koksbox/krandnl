@@ -60,7 +60,7 @@ class TicTacToeGame(private val context: Context) {
         isMisereMode = false // Отключаем Misere при включении Гомоку
         isFreeChoiceMode = false // Отключаем Свободный выбор при включении Гомоку
         if (enabled) {
-            setBoardSize(15) // Гомоку играется на поле 15x15
+            setBoardSize(10) // Гомоку теперь играется на поле 10x10
         }
         resetGame()
         resetScores()
